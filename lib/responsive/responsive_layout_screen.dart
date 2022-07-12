@@ -15,12 +15,13 @@ class ResponsiveLayout extends StatelessWidget {
     return LayoutBuilder(
         //lo utilizamos porque su builder tiene constraints lo que nos permite hacerlo más responsive
         builder: (context, constraints) {
-      if (constraints.maxHeight > webScreenSize) {
+      if (constraints.maxWidth > webScreenSize) {
         //si el tamaño es suficiente mostramos versión de navegaador
         return webScreenLayout;
-      } else {
+      }
+      else{
         return mobileScreenLayout;
-      } //caso contrario usamos versión de movil
+      }
     });
   }
 }
