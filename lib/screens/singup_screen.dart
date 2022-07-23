@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram/resources/auth_methods.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/widgets/text_field_input.dart';
 
@@ -44,6 +45,29 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
             ),
             //widget para poner foto de perfil y tal
+            Stack(
+              children: [
+                CircleAvatar(
+                  radius: 64,
+                  backgroundImage: NetworkImage(
+                      'https://cdn-icons-png.flaticon.com/512/21/21104.png'),
+                  backgroundColor: Colors.grey,
+                ),
+                Positioned(
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.add_a_photo),
+                  ),
+                  bottom: -10,
+                  left: 80,
+                )
+
+              ],
+            ),
+            //espacio
+            const SizedBox(
+              height: 20,
+            ),
             //Text field para el correo
             TextFieldInput(
                 textEditingController: _emailController,
@@ -82,42 +106,24 @@ class _SignupScreenState extends State<SignupScreen> {
               textInputType: TextInputType.text,
               isPass: true,
             ),
-             //espacio
+            //espacio
             const SizedBox(
               height: 12,
             ),
             //container con el register
-            Container(
-              child: const Text("Sign Up"),
-              width: double.infinity,
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              decoration: const ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(4))),
-                color: Colors.blue,
+            InkWell(
+              onTap: (() => AuthMethods().signUpUser(email: _emailController.text, password: _passwordController.text, username: _usernamecontroller.text, bio: _biocontroller.text)),
+              child: Container(
+                child: const Text("Sign Up"),
+                width: double.infinity,
+                alignment: Alignment.center,
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                decoration: const ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4))),
+                  color: Colors.blue,
+                ),
               ),
-            ),
-
-            Flexible(
-              child: Container(),
-              flex: 1,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  child: Text("Don't have an account?"),
-                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 2),
-                ),
-                Container(
-                  child: Text(
-                    "Sign Up",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  padding: EdgeInsets.symmetric(vertical: 15),
-                ),
-              ],
             ),
           ],
         ),

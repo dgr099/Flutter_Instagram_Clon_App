@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
             ),
 
-            Flexible(child: Container(), flex: 1,),
+            Flexible(child: Container(), flex: 1,), //para ponerlo al fondo
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
