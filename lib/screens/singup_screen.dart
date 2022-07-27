@@ -1,7 +1,11 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:instagram/resources/auth_methods.dart';
 import 'package:instagram/utils/colors.dart';
+import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_field_input.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -16,6 +20,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _biocontroller = TextEditingController();
   final TextEditingController _usernamecontroller = TextEditingController();
+  Uint8List? _image;
 
   @override
   void dispose() {
@@ -24,6 +29,30 @@ class _SignupScreenState extends State<SignupScreen> {
     _biocontroller.dispose();
     _usernamecontroller.dispose();
     super.dispose();
+  }
+
+  //función para registrar usuario
+  void signUpUser() async {
+    String res = await AuthMethods().signUpUser(
+                  email: _emailController.text,
+                  password: _passwordController.text,
+                  username: _usernamecontroller.text,
+                  bio: _biocontroller.text,
+                  file: _image);
+
+    if(res!="Succes"){ //si hubo algún error debe mostrarlo
+
+    }
+
+  }
+
+  //función para seleccionar imagen
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
+    //hacemos un set state para el rebuild actualizando las variables de imagen
+    setState(() {
+      _image = im; //actualizamos la imagen
+    });
   }
 
   @override
@@ -47,21 +76,26 @@ class _SignupScreenState extends State<SignupScreen> {
             //widget para poner foto de perfil y tal
             Stack(
               children: [
-                CircleAvatar(
-                  radius: 64,
-                  backgroundImage: NetworkImage(
-                      'https://cdn-icons-png.flaticon.com/512/21/21104.png'),
-                  backgroundColor: Colors.grey,
-                ),
+                _image != null //si no hay imagen carga el avatar
+                    ? CircleAvatar(
+                        radius: 64,
+                        backgroundImage: MemoryImage(_image!),
+                        backgroundColor: Colors.grey,
+                      )
+                    : CircleAvatar( //si hay imagen ponme la imagen
+                        radius: 64,
+                        backgroundImage: NetworkImage(
+                            'https://cdn-icons-png.flaticon.com/512/21/21104.png'),
+                        backgroundColor: Colors.grey,
+                      ),
                 Positioned(
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: selectImage,
                     icon: const Icon(Icons.add_a_photo),
                   ),
                   bottom: -10,
                   left: 80,
                 )
-
               ],
             ),
             //espacio
@@ -112,7 +146,7 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             //container con el register
             InkWell(
-              onTap: (() => AuthMethods().signUpUser(email: _emailController.text, password: _passwordController.text, username: _usernamecontroller.text, bio: _biocontroller.text)),
+              onTap: signUpUser,
               child: Container(
                 child: const Text("Sign Up"),
                 width: double.infinity,

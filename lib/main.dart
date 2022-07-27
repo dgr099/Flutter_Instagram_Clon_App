@@ -7,6 +7,7 @@ import 'package:instagram/responsive/web_screen_layout.dart';
 import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/screens/singup_screen.dart';
 
+
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); //me aseguro que se haya iniciado flutter
