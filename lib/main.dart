@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:instagram/responsive/responsive_layout_screen.dart';
 import 'package:instagram/responsive/web_screen_layout.dart';
 import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/screens/singup_screen.dart';
+import 'package:instagram/utils/colors.dart';
 
 
 void main() async {
@@ -39,7 +41,24 @@ class MyApp extends StatelessWidget {
       /*home: const ResponsiveLayout(
           webScreenLayout: WebScreenLayout(),
           mobileScreenLayout: MobileScreenLayout()),*/
-        home: LoginScreen()
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.userChanges(),
+          builder: ((context, snapshot) {
+            //no es necesario guardar en la memoria local
+            if(snapshot.connectionState == ConnectionState.active){
+              if(snapshot.hasData){
+                return const ResponsiveLayout(
+                  webScreenLayout: WebScreenLayout(),
+                  mobileScreenLayout: MobileScreenLayout());
+              }
+            } else if(snapshot.hasError){
+              return Center(child: Text("${snapshot.error}"));
+            }else if(snapshot.connectionState==ConnectionState.waiting){
+              return Center(child: CircularProgressIndicator(color: primaryColor),);
+            }//si no tiene data, es que no se hizo el login
+            return LoginScreen();
+          }),
+          )
     );
   }
 }

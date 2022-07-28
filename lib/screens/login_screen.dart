@@ -39,6 +39,7 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isloading = false;
     });
+    //si todo salió correctamente cambiamos al menu de inicio
   }
 
   @override
