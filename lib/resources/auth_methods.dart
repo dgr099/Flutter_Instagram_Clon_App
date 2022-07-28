@@ -9,6 +9,36 @@ import 'package:instagram/resources/storage_methods.dart';
 class AuthMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;  //future porque los calls son asíncronos
+  //función para logear usuario
+  Future<String> loginUser({
+    required String email,
+    required String password,
+  })async{
+    String res = "Error";
+    try {
+      if (!(email.isEmpty || password.isEmpty)){ //comprobamos los parámetros
+      //función future, requerrimos un await
+      //intentamos iniciar sesión con password y email
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      res = "Succes";
+    } else{
+      res = "Please enter email and password";
+    }
+    } on FirebaseAuthException catch(err){
+      if(err.code=="wrong-password"){ //aqui podriamos hacer caths de los + importantes y tal
+        res = 'Password is wrong';
+      }
+      else{
+        res = err.code;
+      }
+    } 
+    catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  //función para registrar usuario
   Future<String> signUpUser({
     required String email,
     required String password,
@@ -43,17 +73,21 @@ class AuthMethods {
           }
         );
         res = "Succes";
+      }else{
+        res = "Please enter email and password";
       }
     } on FirebaseAuthException catch(err){
       if(err.code=="invalid-email"){
         res = 'The email is badly formated';
       }
+      else{
+        res = err.code;
+      }
     }
     catch (err) {
       res = err.toString();
-      print(res);
-
     }
+    print(res);
     return res; //devuelvo el string resultado de la operación
 
   }

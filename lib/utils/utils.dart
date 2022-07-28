@@ -9,3 +9,20 @@ pickImage(ImageSource source) async{
     return await _file.readAsBytes();
   }
 }
+
+void showErrorMessage({required BuildContext context, required String cont, required String tittle}){
+  showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Text(cont),
+              actions: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text("Ok"))
+              ],
+            );
+          });
+}
