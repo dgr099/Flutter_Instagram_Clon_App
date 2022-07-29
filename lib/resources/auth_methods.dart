@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/models/users.dart' as model; //para que no se confunda con el users de firebase
 import 'package:instagram/resources/storage_methods.dart';
 
 class AuthMethods {
@@ -60,9 +61,12 @@ class AuthMethods {
           String photoUrl = await StorageMethods().uploadImageToStorage("profilePics", file);
           print(photoUrl);
         }
+        model.User user = model.User(
+          bio: bio, email: email, followers: [], following: [], password: password, username: username);
         await _firestore.collection('users').doc(cred.user!.uid).set( //!. comprueba que no sea null creed y devuelve el valor
-          //creamos la entrada para usuario
-          {
+          //creamos la entrada para usuario, en vez de hacerla manual empleamos la clase usuario
+          user.toJson() //requerimos el toJson porque lo que se guarda es un mapa
+          /*{
             'username' : username,
             'uid' : cred.user!.uid,
             'email' : email,
@@ -70,7 +74,7 @@ class AuthMethods {
             'followers' : [],
             'following' : [],
             //'photoUrl' : photoUrl,
-          }
+          }*/
         );
         res = "Succes";
       }else{

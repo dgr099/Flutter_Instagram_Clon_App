@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram/providers/user_provider.dart';
 import 'package:instagram/resources/auth_methods.dart';
 import 'package:instagram/screens/singup_screen.dart';
 import 'package:instagram/utils/colors.dart';
@@ -18,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isloading = false;
+
 
   @override
   void dispose() {
@@ -109,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
                       return const SignupScreen();
                     }
                     ));

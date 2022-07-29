@@ -2,12 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/providers/user_provider.dart';
 import 'package:instagram/responsive/mobile_screen_layout.dart';
 import 'package:instagram/responsive/responsive_layout_screen.dart';
 import 'package:instagram/responsive/web_screen_layout.dart';
 import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/screens/singup_screen.dart';
 import 'package:instagram/utils/colors.dart';
+import 'package:provider/provider.dart';
 
 
 void main() async {
@@ -33,32 +35,37 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Instagram',
-      theme: ThemeData.dark(
-          //primarySwatch: Colors.blue,
-          ),
-      /*home: const ResponsiveLayout(
-          webScreenLayout: WebScreenLayout(),
-          mobileScreenLayout: MobileScreenLayout()),*/
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.userChanges(),
-          builder: ((context, snapshot) {
-            //no es necesario guardar en la memoria local
-            if(snapshot.connectionState == ConnectionState.active){
-              if(snapshot.hasData){
-                return const ResponsiveLayout(
-                  webScreenLayout: WebScreenLayout(),
-                  mobileScreenLayout: MobileScreenLayout());
-              }
-            } else if(snapshot.hasError){
-              return Center(child: Text("${snapshot.error}"));
-            }else if(snapshot.connectionState==ConnectionState.waiting){
-              return Center(child: CircularProgressIndicator(color: primaryColor),);
-            }//si no tiene data, es que no se hizo el login
-            return LoginScreen();
-          }),
-          )
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider(),),
+      ],
+      child: MaterialApp(
+        title: 'Instagram',
+        theme: ThemeData.dark(
+            //primarySwatch: Colors.blue,
+            ),
+        /*home: const ResponsiveLayout(
+            webScreenLayout: WebScreenLayout(),
+            mobileScreenLayout: MobileScreenLayout()),*/
+          home: StreamBuilder(
+            stream: FirebaseAuth.instance.userChanges(),
+            builder: ((context, snapshot) {
+              //no es necesario guardar en la memoria local
+              if(snapshot.connectionState == ConnectionState.active){
+                if(snapshot.hasData){
+                  return const ResponsiveLayout(
+                    webScreenLayout: WebScreenLayout(),
+                    mobileScreenLayout: MobileScreenLayout());
+                }
+              } else if(snapshot.hasError){
+                return Center(child: Text("${snapshot.error}"));
+              }else if(snapshot.connectionState==ConnectionState.waiting){
+                return Center(child: CircularProgressIndicator(color: primaryColor),);
+              }//si no tiene data, es que no se hizo el login
+              return LoginScreen();
+            }),
+            )
+      ),
     );
   }
 }
