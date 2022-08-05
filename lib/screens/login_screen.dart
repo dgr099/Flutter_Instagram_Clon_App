@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text, password: _passwordController.text);
     if (res != "Succes") {
       //si hubo algún error debe mostrarlo
-      showErrorMessage(cont: res, tittle: "Error on sign up", context: context);
+      showInfoMessage(cont: res, tittle: "Error on sign up", context: context);
     }
     setState(() {
       _isloading = false;

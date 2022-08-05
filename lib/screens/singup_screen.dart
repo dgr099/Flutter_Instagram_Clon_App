@@ -48,7 +48,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     if (res != "Succes") {
       //si hubo algún error debe mostrarlo
-      showErrorMessage(cont: res, tittle: "Error on sign up", context: context);
+      showInfoMessage(cont: res, tittle: "Error on sign up", context: context);
     }
     //Al final de la carga del signUp, el está cargando a falso (terminó la carga)
     setState(() {

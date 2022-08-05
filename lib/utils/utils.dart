@@ -10,11 +10,12 @@ pickImage(ImageSource source) async{
   }
 }
 
-void showErrorMessage({required BuildContext context, required String cont, required String tittle}){
+void showInfoMessage({required BuildContext context, required String cont, required String tittle}){
   showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
+              title: Text(tittle),
               content: Text(cont),
               actions: [
                 TextButton(

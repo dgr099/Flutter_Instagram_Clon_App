@@ -80,6 +80,7 @@ class AuthMethods {
       }else{
         res = "Please enter email and password";
       }
+      await _auth.signInWithEmailAndPassword(email: email, password: password); //intentamos iniciar sesión con los valores del sign up
     } on FirebaseAuthException catch(err){
       if(err.code=="invalid-email"){
         res = 'The email is badly formated';
