@@ -92,13 +92,14 @@ class _SignupScreenState extends State<SignupScreen> {
                         backgroundImage: MemoryImage(_image!),
                         backgroundColor: Colors.grey,
                       )
-                    : CircleAvatar(
+                    : /*CircleAvatar(
                         //si hay imagen ponme la imagen
                         radius: 64,
                         backgroundImage: NetworkImage(
                             'https://cdn-icons-png.flaticon.com/512/21/21104.png'),
                         backgroundColor: Colors.grey,
-                      ),
+                      ),*/
+                      Icon(Icons.account_circle_sharp, color: secondaryColor, size: 64*2),
                 Positioned(
                   child: IconButton(
                     onPressed: selectImage,

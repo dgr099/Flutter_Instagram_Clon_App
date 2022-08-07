@@ -35,7 +35,8 @@ class _ResponsiveLayoutState extends State<ResponsiveLayout> {
         builder: (context, constraints) {
       if (constraints.maxWidth > webScreenSize) {
         //si el tamaño es suficiente mostramos versión de navegaador
-        return widget.webScreenLayout;
+        //return widget.webScreenLayout;
+        return widget.mobileScreenLayout;
       }
       else{
         return widget.mobileScreenLayout;

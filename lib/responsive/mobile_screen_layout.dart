@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/models/users.dart' as models;
 import 'package:instagram/providers/user_provider.dart';
 import 'package:instagram/screens/add_post_screen.dart';
+import 'package:instagram/screens/feed_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:provider/provider.dart';
 
@@ -62,7 +63,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
       body: Center(
         //lo bueno del page view es que permite el scroll
         child: PageView(children: [
-          Text('2'),
+          FeedScreen(),
           Text('3'),
           AddPostScreen(),
           Text('4'),

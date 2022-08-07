@@ -118,68 +118,93 @@ class _AddPostScreenState extends State<AddPostScreen> {
     setState(() {
       _image=emptyImg; //reiniciamos la imagen
       showInfoMessage(cont: res, tittle: "Post already Upload", context: context);
-    });
-    setState(() {
-      _isloading=true; //ponemos como que está cargando
+      _isloading=false;
     });
 
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Post to"),
-        leading:
-            IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back_ios_new)),
-      ),
-      body: SingleChildScrollView( //por el tema del overflow
-        child: Column(children: [
-          const SizedBox(
-            height: 24,
+    return 
+      Stack(
+        children: [
+          Scaffold( 
+          appBar: AppBar(
+            title: Text("Post to"),
+            leading:
+                IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back_ios_new)),
           ),
-          //SizedBox(width: MediaQuery.of(context).size.width*0.85, child: AspectRatio(aspectRatio: 487/451, child: Container(decoration: BoxDecoration(image: DecorationImage(image: NetworkImage("https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"), fit: BoxFit.fill, alignment: FractionalOffset.center)),)),),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.85,
-            child: AspectRatio(
-                aspectRatio: 487 / 451,
-                child: Container(
-                  clipBehavior: Clip.hardEdge, //para recortar con el borde redondeado
-                  child: InkWell(onTap: selectImage, child: _image==null ? Icon(Icons.photo) : Image.memory(_image!, fit: BoxFit.cover,)),
-                  decoration: BoxDecoration(
-                      color: secondaryColor,
-                      border: Border.all(color: primaryColor),
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                )),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CircleAvatar(
-                  backgroundImage: _image!=null ? Image.memory(_image!,
-              ).image :  NetworkImage('https://cdn-icons-png.flaticon.com/512/21/21104.png'),),
-              //Image.memory(_user_image_url!, fit: BoxFit.cover,).image),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.7,
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: "write a caption", border: InputBorder.none),
-                  maxLines: 2,
-                  maxLength: 300,
-                  controller: _captionContoller,
+          body: SingleChildScrollView( //por el tema del overflow
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: 500,
                 ),
+                child: Column(children: [
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  //SizedBox(width: MediaQuery.of(context).size.width*0.85, child: AspectRatio(aspectRatio: 487/451, child: Container(decoration: BoxDecoration(image: DecorationImage(image: NetworkImage("https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"), fit: BoxFit.fill, alignment: FractionalOffset.center)),)),),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    child: AspectRatio(
+                        aspectRatio: 487 / 451,
+                        child: Container(
+                          clipBehavior: Clip.hardEdge, //para recortar con el borde redondeado
+                          child: InkWell(onTap: selectImage, child: _image==null ? Icon(Icons.photo) : Image.memory(_image!, fit: BoxFit.cover,)),
+                          decoration: BoxDecoration(
+                              color: secondaryColor,
+                              border: Border.all(color: primaryColor),
+                              borderRadius: BorderRadius.all(Radius.circular(15))),
+                        )),
+                  ),
+                  const SizedBox(
+                    height: 24,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.85,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _user_image_url!="" ?
+                        CircleAvatar(backgroundImage: NetworkImage(_user_image_url))
+                        :
+                        Icon(Icons.account_circle_sharp, color: secondaryColor, size: 40),
+                        //Image.memory(_user_image_url!, fit: BoxFit.cover,).image),
+                        SizedBox(
+                          width:350,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintText: "write a caption", border: InputBorder.none),
+                            maxLines: 2,
+                            maxLength: 300,
+                            controller: _captionContoller,
+                          ),
+                        ),
+                        InkWell(
+                          child: Container(child: Icon(Icons.check)),
+                          onTap: uploadPost,
+                        ),
+                      ],
+                    ),
+                  )
+                ]),
               ),
-              InkWell(
-                child: Container(child: Icon(Icons.check)),
-                onTap: uploadPost,
-              ),
-            ],
-          )
-        ]),
-      ),
-    );
+            ),
+          ),
+        ),
+        _isloading ?
+        Container(
+            child: Center(child: CircularProgressIndicator(color: primaryColor)),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: new BoxDecoration(
+                color:   secondaryColor.withOpacity(0.5),//here i want to add opacity
+                border: new Border.all(color: Colors.black54,),
+            )
+          ):
+          Container()
+        ]
+      );
   }
 }
